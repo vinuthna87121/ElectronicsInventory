@@ -26,8 +26,13 @@ public class ElectronicsController {
         ElectronicsRepository electronicsRepository;
 
         @GetMapping
-        public List<Electronics> getAll(){
-            return electronicsService.getallElectronics();
+        public ResponseEntity<List<Electronics>> getAll(){
+            List<Electronics> result= electronicsService.getallElectronics();
+            if(result != null){
+                return ResponseEntity.ok(result);
+            }else{
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
         }
 
 
@@ -53,29 +58,36 @@ public class ElectronicsController {
             }
         }
         @PostMapping("/add")
-        public Electronics addElectronics(@RequestBody Electronics addelectronics ) {
-            return electronicsService.createProduct(addelectronics);
+        public ResponseEntity<Electronics> addElectronics(@RequestBody Electronics addelectronics ) {
+            Electronics savedProduct =  electronicsService.createProduct(addelectronics);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
         }
+
         @PutMapping("/update/{id}")
-        public Electronics updateElectronics(@PathVariable Integer id, @RequestBody Electronics updateelectronics ) {
-            return electronicsService.updateProduct(id,updateelectronics);
+        public ResponseEntity<Electronics> updateElectronics(@PathVariable Integer id, @RequestBody Electronics updateelectronics) {
+            Electronics updatedProduct = electronicsService.updateProduct(id, updateelectronics);
+            return ResponseEntity.ok(updatedProduct);
+        }
 
-        }
-        @DeleteMapping("/delete/{id}")
-        public void deleteElectronics(@PathVariable Integer id) {
-            electronicsService.deleteById(id);
-
-        }
-        @PostMapping("/addbulk")
-        public List<Electronics> addBulk(@RequestBody List<Electronics> electronics){
-            return electronicsService.addBulk(electronics);
-
-        }
-        @GetMapping("/groupByCategory")
-        public Map<String,Long> groupByCategory(){
-            return electronicsService.groupByCategory();
-        }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteElectronics(@PathVariable Integer id) {
+        electronicsService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/addbulk")
+    public ResponseEntity<List<Electronics>> addBulk(@RequestBody List<Electronics> electronics) {
+        List<Electronics> savedProducts = electronicsService.addBulk(electronics);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedProducts);
+    }
+
+    @GetMapping("/groupByCategory")
+    public ResponseEntity<Map<String, Long>> groupByCategory() {
+        Map<String, Long> grouped = electronicsService.groupByCategory();
+        return ResponseEntity.ok(grouped);
+    }
+
+}
 
 
 
