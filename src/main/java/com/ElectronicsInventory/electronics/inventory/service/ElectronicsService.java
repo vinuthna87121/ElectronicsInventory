@@ -1,7 +1,6 @@
 package com.ElectronicsInventory.electronics.inventory.service;
 
 import com.ElectronicsInventory.electronics.inventory.entity.Electronics;
-import com.ElectronicsInventory.electronics.inventory.exception.ResourceNotFoundException;
 import com.ElectronicsInventory.electronics.inventory.repository.ElectronicsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +34,7 @@ public class ElectronicsService {
         return electronicsRepository.save(addproduct);
     }
     public Electronics updateProduct(Integer id,Electronics updateProduct) {
-        Electronics existingProduct= electronicsRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Electronic item  not found with ID: " + id));
+        Electronics existingProduct= electronicsRepository.findById(id).orElseThrow(()-> new RuntimeException("Electronic item  not found with ID: " + id));
 
         existingProduct.setName(updateProduct.getName());
         existingProduct.setTotalStock(updateProduct.getTotalStock());

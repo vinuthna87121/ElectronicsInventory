@@ -21,30 +21,12 @@ public class Electronics {
     @Column(nullable=false)
     private int totalStock;
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Electronics that = (Electronics) o;
-        return id == that.id && Float.compare(actualPrice, that.actualPrice) == 0 && Float.compare(discountedPrice, that.discountedPrice) == 0 && totalStock == that.totalStock && Objects.equals(name, that.name) && Objects.equals(category, that.category);
-    }
+
 
     public Electronics() {
-        super();
     }
 
-    public Electronics(int id) {
-        this.id = id;
-        this.name = name;
-        this.category = category;
-        this.actualPrice = actualPrice;
-        this.discountedPrice = discountedPrice;
-        this.totalStock = totalStock;
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, category, actualPrice, discountedPrice, totalStock);
-    }
 
     public int getTotalStock() {
         return totalStock;
